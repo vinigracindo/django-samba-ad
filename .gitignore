@@ -1,6 +1,7 @@
 .DS_STORE
 .venv
 .idea
+idea/
 .django_samba_ad
 *.sqlite3
 *pyc
