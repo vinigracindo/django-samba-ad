@@ -4,7 +4,11 @@ Web management application for Samba Active Directory
 
 ## Features
 
-1. Create, list and update domains Users.
+1. Create, list, delete and update domains Users.
+
+## Setup
+
+Add rule in sudoers file (sudo visudo): **myuser ALL=(ALL) NOPASSWD:ALL**
 
 ## Getting started
 
