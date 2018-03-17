@@ -13,7 +13,7 @@ Add rule in sudoers file (sudo visudo): **myuser ALL=(ALL) NOPASSWD:ALL**
 ## Getting started
 
 ```console
-git clone git@github.com:vinigracindo/django-samba-ad.git dsad
+git clone https://github.com/vinigracindo/django-samba-ad.git dsad
 cd dsad
 python -m venv .dsad
 source .dsad/bin/activate #Unix CMD

@@ -14,6 +14,7 @@ import os
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -25,6 +26,9 @@ SAMBA_SERVER_IP = config('SAMBA_SERVER_IP')
 SAMBA_SERVER_PORT = config('SAMBA_SERVER_PORT', cast=int)
 SAMBA_ADMIN_USER = config('SAMBA_ADMIN_USER')
 SAMBA_ADMIN_PASSWORD = config('SAMBA_ADMIN_PASSWORD')
+
+from django_samba_ad.ad.classes import SSHActiveDirectoryAccessModel
+STRATEGY_AD_MODEL = SSHActiveDirectoryAccessModel
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')

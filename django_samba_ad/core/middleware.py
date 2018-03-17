@@ -2,6 +2,8 @@ import socket
 from django.conf import settings
 from django.shortcuts import render
 
+from django_samba_ad.ad.classes import SSHActiveDirectoryAccessModel
+
 
 def online_server_required(get_response):
     # One-time configuration and initialization.
@@ -10,13 +12,14 @@ def online_server_required(get_response):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        active_directory = SSHActiveDirectoryAccessModel(
+            settings.SAMBA_SERVER_IP,
+            settings.SAMBA_SERVER_PORT,
+            settings.SAMBA_ADMIN_USER,
+            settings.SAMBA_ADMIN_PASSWORD
+        )
 
-        # The error indicator is 0 if the operation succeeded, otherwise the value of the errno variable
-        result = sock.connect_ex((settings.SAMBA_SERVER_IP, settings.SAMBA_SERVER_PORT))
-        is_online_server = True if (result == 0) else False
-
-        if not is_online_server:
+        if not active_directory.is_online():
             return render(request, 'offline.html')
 
         response = get_response(request)
