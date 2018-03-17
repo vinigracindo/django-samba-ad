@@ -1,5 +1,5 @@
 .DS_STORE
-.venv
+.env
 .idea
 idea/
 .django_samba_ad
