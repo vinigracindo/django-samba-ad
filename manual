@@ -1,0 +1,4 @@
+- Usuário SSH precisa ser sudo.
+
+- Adicionar no sudors:
+myuser  ALL=NOPASSWD:/home/myuser/somescript.sh (sudo visudo)

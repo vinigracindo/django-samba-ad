@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SAMBA4 SERVER CONFIGURATION: variables
 SAMBA_SERVER_IP = config('SAMBA_SERVER_IP')
+SAMBA_SERVER_PORT = config('SAMBA_SERVER_PORT', cast=int)
 SAMBA_ADMIN_USER = config('SAMBA_ADMIN_USER')
 SAMBA_ADMIN_PASSWORD = config('SAMBA_ADMIN_PASSWORD')
 
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_samba_ad.core',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_samba_ad.core.middleware.online_server_required',
 ]
 
 ROOT_URLCONF = 'django_samba_ad.urls'
@@ -68,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django_samba_ad.core.context_processors.server_information_processor',
             ],
         },
     },
