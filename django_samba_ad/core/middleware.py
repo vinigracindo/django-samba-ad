@@ -11,6 +11,8 @@ def online_server_required(get_response):
         # the view (and later middleware) are called.
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # The error indicator is 0 if the operation succeeded, otherwise the value of the errno variable
         result = sock.connect_ex((settings.SAMBA_SERVER_IP, settings.SAMBA_SERVER_PORT))
         is_online_server = True if (result == 0) else False
 

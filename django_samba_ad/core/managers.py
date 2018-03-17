@@ -15,13 +15,15 @@ class UserModelManager(models.Manager):
                        password=settings.SAMBA_ADMIN_PASSWORD,
                        allow_agent=True)
 
-        command = "sudo -S pdbedit -L -v"
+        command = "sudo pdbedit -L -v"
         stdin, stdout, stderr = client.exec_command(command)
-        entries = stdout.read().decode('utf-8').split('-' * 15)
+        entries = stdout.read().decode('utf-8', errors='replace').split('-' * 15)
         entries = list(filter(None, entries))
         users = []
         for entry in entries:
+            print(entry)
             username = re.search('Unix username:(.*)\\n', entry).group(1).strip()
+            print(username)
             # Not is computer name.
             if username.find('$') == -1:
                 fullname = re.search('Full Name:(.*)\\n', entry).group(1).strip()
