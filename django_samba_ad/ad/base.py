@@ -24,3 +24,6 @@ class BaseActiveDirectoryAccessModel(object):
 
     def retrieve_users(self):
         pass
+
+    def update_user(self):
+        pass

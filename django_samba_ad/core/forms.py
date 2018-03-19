@@ -7,3 +7,6 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         exclude = []
+        widgets = {
+            'username': forms.HiddenInput
+        }

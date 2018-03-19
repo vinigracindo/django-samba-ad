@@ -1,4 +1,5 @@
 import re
+from time import sleep
 
 import paramiko
 
@@ -33,9 +34,47 @@ class SSHActiveDirectoryAccessModel(BaseActiveDirectoryAccessModel):
 
         # The error indicator is 0 if the operation succeeded, otherwise the value of the errno variable
         result = sock.connect_ex((self.server_ip, self.server_port))
-        is_online_server = True if (result == 0) else False
 
-        return is_online_server
+        return True if (result == 0) else False
+
+    def update_user(self, user_attributes):
+        print(user_attributes)
+        username = user_attributes['username']
+        fullname = user_attributes['fullname']
+        description = user_attributes['description']
+        enable = user_attributes['enable']
+        change_password = user_attributes['change_password_next_logon']
+
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.WarningPolicy)
+        client.connect(self.server_ip,
+                       username=self.admin_user,
+                       password=self.admin_password,
+                       allow_agent=True)
+
+        if change_password:
+            command = 'sudo net sam set pwdmustchangenow {} yes'.format(username)
+            client.exec_command(command)
+            sleep(0.5)
+
+        if not enable:
+            command = 'sudo net sam set disable {} yes'.format(username)
+        else:
+            command = 'sudo net sam set disable {} no'.format(username)
+
+        client.exec_command(command)
+        sleep(0.5)
+
+        command = 'sudo net sam set comment {} "{}"'.format(username, description)
+        client.exec_command(command)
+        sleep(0.5)
+        command = 'sudo net sam set fullname {} "{}"'.format(username, fullname)
+        client.exec_command(command)
+        sleep(0.5)
+        command = 'sudo net sam set pwd {} "{}"'.format(username, fullname)
+        client.exec_command(command)
+        sleep(0.5)
 
     def retrieve_users(self):
         client = paramiko.SSHClient()
