@@ -17,7 +17,7 @@ git clone https://github.com/vinigracindo/django-samba-ad.git dsad
 cd dsad
 python -m venv .dsad
 source .dsad/bin/activate #Unix CMD
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 cp contrib/env-sample .env
 python manage.py test
 ```
