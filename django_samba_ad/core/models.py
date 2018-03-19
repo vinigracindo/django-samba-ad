@@ -1,10 +1,14 @@
 from django.db import models
 
-from django_samba_ad.core.managers import UserModelManager
-
 
 class User(models.Model):
-    username = models.CharField(max_length=50)
-    fullname = models.CharField(max_length=200)
+    username = models.CharField(max_length=30, unique=True)
+    fullname = models.CharField(max_length=40)
+    description = models.TextField(null=True, blank=True)
+    enable = models.BooleanField(default=True)
+    last_logon = models.CharField(max_length=100, blank=True, null=True, editable=False)
+    change_password_next_logon = models.BooleanField(default=False)
+    disable_account = models.BooleanField(default=False)
 
-    objects = UserModelManager()
+    def __str__(self):
+        return self.username

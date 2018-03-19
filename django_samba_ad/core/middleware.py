@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import render
 
 from django_samba_ad.ad.classes import SSHActiveDirectoryAccessModel
+from django_samba_ad.core.models import User
 
 
 def online_server_required(get_response):
@@ -12,7 +13,7 @@ def online_server_required(get_response):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
 
-        active_directory = SSHActiveDirectoryAccessModel(
+        active_directory = settings.STRATEGY_AD_MODEL(
             settings.SAMBA_SERVER_IP,
             settings.SAMBA_SERVER_PORT,
             settings.SAMBA_ADMIN_USER,

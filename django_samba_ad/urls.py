@@ -19,5 +19,6 @@ from django_samba_ad.core import views as core_views
 
 urlpatterns = [
     path('', core_views.index, name='index'),
+    path('user/edit/', core_views.user_edit, name='user_edit'),
     path('admin/', admin.site.urls),
 ]

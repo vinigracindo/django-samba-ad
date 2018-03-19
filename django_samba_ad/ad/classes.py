@@ -5,6 +5,21 @@ import paramiko
 from django_samba_ad.ad.base import BaseActiveDirectoryAccessModel
 import socket
 
+"""
+Samba Account Flags
+D	Account is disabled.
+H	A home directory is required.
+I	An inter-domain trust account.
+L	Account has been auto-locked.
+M	An MNS (Microsoft network service) logon account.
+N	Password not required.
+S	A server trust account.
+T	Temporary duplicate account entry.
+U	A normal user account.
+W	A workstation trust account.
+X	Password does not expire.
+"""
+
 
 class SSHActiveDirectoryAccessModel(BaseActiveDirectoryAccessModel):
     def connect(self):
@@ -37,16 +52,25 @@ class SSHActiveDirectoryAccessModel(BaseActiveDirectoryAccessModel):
         entries = list(filter(None, entries))
         users = []
         for entry in entries:
-            print(entry)
             username = re.search('Unix username:(.*)\\n', entry).group(1).strip()
-            print(username)
             # Not is computer name.
             if username.find('$') == -1:
                 fullname = re.search('Full Name:(.*)\\n', entry).group(1).strip()
+                description = re.search('Account desc:(.*)\\n', entry).group(1).strip()
                 logontime = re.search('Logon time:(.*)\\n', entry).group(1).strip()
-                user = {'username': username, 'fullname': fullname, 'last_logon': logontime}
+                account_flags = re.search('Account Flags:(.*)\\n', entry).group(1).strip()
+                user = {'username': username,
+                        'description': description,
+                        'fullname': fullname,
+                        'enable': not account_flags.__contains__('D'),
+                        'last_logon': logontime}
                 users.append(user)
 
         client.close()
 
         return users
+
+"""
+    change_password_next_logon = models.BooleanField(default=False)
+    disable_account = models.BooleanField(default=False)
+"""
